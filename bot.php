@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- ResponsiveVoice script for mobile text-to-speech -->
+    <script src="https://code.responsivevoice.org/responsivevoice.js"></script>
 </head>
 <body>
     <div class="wrapper">
@@ -53,19 +55,28 @@
                 };
             }
 
-            // Function to use text-to-speech for bot's response
             function speakBotResponse(response) {
-                const synth = window.speechSynthesis;
-                const utterance = new SpeechSynthesisUtterance(response);
+                // Check if ResponsiveVoice is available
+                if (window.responsiveVoice) {
+                    // Use ResponsiveVoice for text-to-speech on mobile with adjusted rate (speed)
+                    window.responsiveVoice.speak(response, "UK English Female", { rate: 1.1 });
+                } else {
+                    // Fallback to SpeechSynthesisUtterance for browsers that support it
+                    const synth = window.speechSynthesis;
+                    const utterance = new SpeechSynthesisUtterance(response);
 
-                // Event listener for when the speech ends
-                utterance.addEventListener('end', function() {
-                    $(".shake-animation").removeClass("shake");
-                    $("#mic-btn img").attr("src", "microphone-lines-solid.svg"); // Set the microphone icon back to normal
-                });
+                    // Adjust the rate (speed) of the voice
+                    utterance.rate = 1.2; // You can adjust this value to increase or decrease the speed
 
-                // Start the voice speaking
-                synth.speak(utterance);
+                    // Event listener for when the speech ends
+                    utterance.addEventListener('end', function () {
+                        $(".shake-animation").removeClass("shake");
+                        $("#mic-btn img").attr("src", "microphone-lines-solid.svg"); // Set the microphone icon back to normal
+                    });
+
+                    // Start the voice speaking
+                    synth.speak(utterance);
+                }
             }
 
             // Microphone button click event
