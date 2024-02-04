@@ -116,7 +116,7 @@
             }
 
             // Initial message to speech when the page loads
-            const initialBotMessage = 'Hello there, how can I help you?';
+            const initialBotMessage = 'Hello there, hope you are doing great! let me know if you want any help to listen to latest news, have access to your company information?';
             speakBotResponse(initialBotMessage);
         });
     </script>
